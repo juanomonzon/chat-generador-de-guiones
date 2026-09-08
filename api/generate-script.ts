@@ -11,7 +11,15 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const { prompt } = req.body || {};
+    let body = req.body;
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        body = {};
+      }
+    }
+    const { prompt } = body || {};
     if (!prompt) {
       return res.status(400).json({ error: "El campo 'prompt' es requerido." });
     }
