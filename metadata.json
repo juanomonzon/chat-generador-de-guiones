@@ -1,0 +1,8 @@
+{
+  "name": "Radar Cultural — Guiones",
+  "description": "Herramienta para crear guiones de Radar Cultural usando Gemini 3.8 Flash.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

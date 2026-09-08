@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Radar Cultural — Guiones</title>
+    <meta name="description" content="Herramienta para crear guiones de Radar Cultural usando Gemini 3.8 Flash." />
+    <meta property="og:title" content="Radar Cultural — Guiones" />
+    <meta property="og:description" content="Herramienta para crear guiones de Radar Cultural usando Gemini 3.8 Flash." />
+  </head>
+  <body>
+    <div id="root">
+      <div id="loading-fallback" style="background: #0c0c0c; color: #efefef; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; font-family: sans-serif;">
+        <div style="width: 40px; height: 40px; border: 3px solid #272727; border-top-color: #c8f060; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+        <p style="margin-top: 20px; color: #666; font-size: 14px;">Iniciando Radar Cultural...</p>
+      </div>
+    </div>
+    <style>
+      @keyframes spin { to { transform: rotate(360deg); } }
+    </style>
+    <script>
+      // Shim process for libraries that expect it
+      window.process = { env: {} };
+      
+      console.log("[CHECKPOINT 1] HTML script running...");
+      
+      // Heartbeat para ver si la pestaña sigue viva
+      setInterval(function() {
+        console.log("Heartbeat - HTML side is alive");
+      }, 5000);
+      
+      // Detector de errores de carga de scripts
+      window.addEventListener('error', function(e) {
+        if (e.target.tagName === 'SCRIPT') {
+          console.error("Error cargando script:", e.target.src);
+          var root = document.getElementById('root');
+          if (root) {
+            root.innerHTML = '<div style="color: white; padding: 40px; font-family: monospace; background: #1a0000; height: 100vh;">' +
+              '<h1 style="color: #ff4444;">[!] Error de Red</h1>' +
+              '<p>No se pudo cargar un archivo critico: ' + e.target.src + '</p>' +
+              '<button onclick="location.reload()" style="margin-top:20px; background:#c8f060; padding:10px; border:none; border-radius:5px; cursor:pointer;">Reintentar</button>' +
+              '</div>';
+          }
+        }
+      }, true);
+
+      // Timeout para detectar si React no arranca
+      setTimeout(function() {
+        var fallback = document.getElementById('loading-fallback');
+        if (fallback && fallback.parentNode) {
+          console.warn("React esta tardando mucho en iniciar...");
+          var p = fallback.querySelector('p');
+          if (p) p.innerHTML = "Iniciando Radar Cultural...<br><span style='font-size: 11px; color: #c8f060; display:block; margin-top:10px;'>Si esto demora, revisa la consola (F12) para ver el error.</span>";
+        }
+      }, 6000);
+
+      // Global error handler
+      window.onerror = function(msg, url, line, col, error) {
+        console.error("Error Global Detectado:", msg, "en", url, ":", line);
+        var root = document.getElementById('root');
+        if (root) {
+          root.innerHTML = '<div style="color: white; padding: 40px; font-family: monospace; background: #1a0000; height: 100vh; overflow: auto;">' +
+            '<h1 style="color: #ff4444;">[!] Error Critico de Carga</h1>' +
+            '<p style="color: #ff8888; font-weight: bold;">' + msg + '</p>' +
+            '<p style="color: #666;">URL: ' + url + ' | Linea: ' + line + '</p>' +
+            '<hr style="border-color: #333; margin: 20px 0;">' +
+            '<pre style="background: #000; padding: 15px; border-radius: 8px; color: #ccc; white-space: pre-wrap;">' + (error ? error.stack : 'No hay detalles del error (stack trace)') + '</pre>' +
+            '<p style="margin-top: 20px;"><button onclick="location.reload()" style="background: #c8f060; color: #000; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Reintentar Carga</button></p>' +
+            '</div>';
+        }
+        return false;
+      };
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
